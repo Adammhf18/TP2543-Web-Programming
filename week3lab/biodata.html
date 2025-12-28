@@ -1,0 +1,102 @@
+<!--
+Matric Number: A194333
+Name: Muhammad Adam Mirza
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Biodata</title>
+</head>
+<body>
+<h1>Biodata Form</h1>
+<hr>
+<form action="http://lrgs.ftsm.ukm.my/users/a123456/week3lab/validate_biodata.php" method="post" enctype="multipart/form-data">
+    <table border="1" cellpadding="10">
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" name="name" placeholder="Insert your name" autofocus required pattern="^[A-Za-z]+$" title="Only alphabets are allowed"></td>
+        </tr>
+        <tr>
+            <td>Age:</td>
+            <td><input type="number" name="age" min="0" max="100" step="1" required></td>
+        </tr>
+        <tr>
+            <td>Sex:</td>
+            <td>
+                <label><input type="radio" name="sex" value="male" checked>Male</label>
+                <label><input type="radio" name="sex" value="female" required>Female</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Address:</td>
+            <td><textarea name="address" cols="50" rows="5" placeholder="Insert your address" required></textarea></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type="email" name="email" placeholder="abc@siswa.ukm.edu.my" required pattern="^[a-zA-Z0-9._%+-]+@ukm\.(edu\.my|siswa\.ukm\.edu\.my)$" title="Email should contain 'ukm'"></td>
+        </tr>
+        <tr>
+            <td>Time of Birth:</td>
+            <td><input type="datetime-local" name="dob" required></td>
+        </tr>
+        <tr>
+            <td>Height:</td>
+            <td><input type="range" name="height" id="heightId" min="100" max="200" value="150" disabled> <output id="outputId">150</output> cm</td>
+        </tr>
+        <tr>
+            <td>Tel:</td>
+            <td><input type="tel" name="phone" placeholder="+6012-3456789" required pattern="^(?:\+60|0060)\d{7,}$" title="Phone number must start with +60 or 0060"></td>
+        </tr>
+        <tr>
+            <td>My Favourite Color:</td>
+            <td><input type="color" name="color" value="#008000" required></td>
+        </tr>
+        <tr>
+            <td>Fb/TW/IG:</td>
+            <td><input type="url" name="fbtwig" placeholder="Insert your URL" required></td>
+        </tr>
+        <tr>
+            <td>My Face Photo:</td>
+            <td><input type="file" name="photo" accept="image/png, image/jpeg, image/gif" required></td>
+        </tr>
+        <tr>
+            <td>My University:</td>
+            <td><select name="university" required>
+                <option value="UKM" selected>Universiti Kebangsaan Malaysia</option>
+                <option value="UPM">Universiti Putra Malaysia</option>
+                <option value="UM">Universiti Malaya</option>
+                <option value="USM">Universiti Sains Malaysia</option>
+                <option value="UTM">Universiti Teknologi Malaysia</option>
+            </select>
+            </td>
+        </tr>
+    </table>
+    <hr>
+    <input type="hidden" name="matricnum" value="a194333">
+    <input type="submit" name="biodata_form" value="Submit My Biodata">
+</form>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Biodata</title>
+    <style>
+        label {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Biodata Form</h1>
+<hr>
+<form action="http://lrgs.ftsm.ukm.my/users/a123456/week3lab/validate_biodata.php" method="post" enctype="multipart/form-data">
+    <table border="1" cellpadding="10">
+        <tr>
+
+        </tr>
+        <tr>
+
+        </tr>
+        <tr>

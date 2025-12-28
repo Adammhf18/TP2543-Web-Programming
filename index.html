@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP2543 Web Programming</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Helvetica Neue', sans-serif;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        footer, .sidebar{
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        footer {
+            position: fixed; /* Fixes the footer at the bottom */
+            bottom: 0; /* Positions it at the bottom */
+            left: 0; /* Ensures it spans the entire width */
+            right: 0; /* Ensures it spans the entire width */
+            display: flex; /* Uses flexbox to align its children */
+            justify-content: space-between; /* Spreads content across the footer */
+            align-items: center; /* Centers content vertically */
+            padding: 20px 60px; /* Adds padding around the footer */
+            color: white; /* White text color */
+            font-size: 14px; /* Smaller font size */
+            z-index: 2; /* Ensures it is above other content */
+            padding-bottom: 50px;
+        }
+
+
+        .sidebar {
+            position: fixed;  /* Fixes the sidebar's position */
+            top: 50%;  /* Centers it vertically */
+            right: 0;  /* Positions it on the right side */
+            transform: translateY(-50%);  /* Adjusts for perfect vertical centering */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-right: 70px;
+            gap: 35px;
+        }
+
+        .sidebar-item {
+            text-align: center;
+            cursor: pointer;
+            font-size: 20px;
+            color: #818181;
+        }
+
+        .sidebar-item.active {
+            color: #ff9900;
+        }
+
+        main {
+            flex: 1;
+            padding: 80px 0px 60px; /* Adds padding for header and footer space */
+            overflow-y: auto; /* Makes content scrollable */
+            height: calc(100vh - 160px); /* Subtract height of header and footer */
+            box-sizing: border-box;
+            background-color: #171719;
+        }
+
+        main::-webkit-scrollbar {
+            width: 0; /* Hide scroll indicator */
+        }
+
+        main {
+            -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+        }
+
+        section {
+            margin-bottom: 30px; /* Add space between sections */
+            padding: 20px;
+            color: white;
+            box-sizing: border-box; /* Ensures padding is included in height calculation */
+            height: 110vh;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        /* Different colors for each section */
+        #section1 {
+            background-color: #171719;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-top: 170px;
+            font-size: 122px;
+            padding-left: 95px;
+        }
+        #section2, #section3, #section4 {
+            background-color: #171719;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-size: 122px;
+            padding-left: 95px;
+        }
+
+        .wrapper {
+            position: relative;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .large {
+            position: absolute;
+            font-size: 300px;
+            color: white;
+            opacity: 0.1;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            transform: translateY(-170px) translateX(-350px);
+            transition: transform 0.1s ease-out; /* Smooth animation */
+        }
+
+        .small-word-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.2cm;
+            padding-right: 600px;
+        }
+
+        .small-word {
+            font-size: 16px;
+            color: white;
+            letter-spacing: 0.1em;
+            font-weight: 300;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: nowrap; /* Prevent wrapping for horizontal scrolling */
+            gap: 30px; /* Spacing between cards */
+            overflow-x: auto; /* Enable horizontal scrolling */
+            padding: 20px 0; /* Add spacing around the container */
+            margin-top: 20px; /* Space between small words and cards */
+            width: 100%; /* Make the card container full width */
+        }
+
+        .card-container::-webkit-scrollbar {
+            height: 8px; /* Horizontal scrollbar height */
+        }
+
+        .card-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 153, 0, 0.5); /* Thumb color */
+            border-radius: 10px;
+        }
+
+        .card-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1); /* Track color */
+        }
+
+        .card {
+            flex: 0 0 250px; /* Poke card rectangle shape */
+            height: 350px;
+            background: linear-gradient(135deg, #333, #444); /* Gradient background */
+            color: white;
+            border-radius: 16px; /* Rounded corners */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Align text at top and bottom */
+            font-family: 'JetBrains Mono', monospace;
+            padding: 10px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+            text-decoration: none; /* Remove underline for links */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
+        }
+
+        /* Text at the top center */
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Rotated text at bottom left */
+        .card-subtitle {
+            position: absolute;
+            font-size: 16px;
+            bottom: 150px;
+            left: 10px;
+            transform: rotate(90deg); /* Rotate text */
+            transform-origin: left bottom; /* Rotate around bottom-left corner */
+            color: white;
+        }
+
+        .card-status {
+            font-size: 14px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            text-transform: uppercase; /* Capitalize */
+            transition: color 0.3s ease;
+        }
+
+        /* Add this CSS for the dynamic shadows */
+        .card-status.completed {
+            color: green; /* Green shadow for completed */
+        }
+
+        .card-status.in-progress {
+            color: #ff9900; /* Orange shadow for in progress */
+        }
+
+        .card-status.not-started {
+            color: red; /* White shadow for not started */
+        }
+
+        .blinking-circle {
+            display: inline-block;
+            width: 10px; /* Diameter of the circle */
+            height: 10px;
+            background-color: #ff9900;
+            border-radius: 50%; /* Makes it a circle */
+            animation: blink 2s infinite; /* Infinite blinking animation */
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 0; /* Fully transparent at the end */
+            }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <section id="section1">
+        <div class="wrapper">
+            <div class="large">quickintro</div>
+            quick intro
+        </div>
+        <div class="small-word-container">
+            <div class="small-word">hey, I'm Adam Mirza with matric number A194333.</div>
+            <div class="small-word">welcome to my small space on the internet, where I showcase my TP2543 skills.</div>
+        </div>
+    </section>
+
+    <section id="section2">
+        <div class="wrapper">
+            <div class="large">laboratory</div>
+            laboratory
+        </div>
+        <div class="small-word-container">
+            <div class="small-word">collection of my web development works and experiments.</div>
+            <div class="small-word">mostly used html/php stack, more incoming stack will be learned.</div>
+        </div>
+        <div class="card-container">
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week2lab/" class="card">
+                <div class="card-title">Week2Lab</div>
+                <div class="card-subtitle rotated">Basic HTML</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week3lab/" class="card">
+                <div class="card-title">Week3Lab</div>
+                <div class="card-subtitle rotated">HTML Forms</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week4lab/" class="card">
+                <div class="card-title">Week4Lab</div>
+                <div class="card-subtitle rotated">Basic PHP</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week5lab/" class="card">
+                <div class="card-title">Week5Lab</div>
+                <div class="card-subtitle rotated">PHP + MySQL</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week6lab/" class="card">
+                <div class="card-title">Week6Lab</div>
+                <div class="card-subtitle rotated">Advanced PHP</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week7lab/myguestbook/" class="card">
+                <div class="card-title">Week7Lab</div>
+                <div class="card-subtitle rotated">CodeIgniter</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week9lab/index.html" class="card">
+                <div class="card-title">Week9Lab</div>
+                <div class="card-subtitle rotated">CSS</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week10lab/index.html" class="card">
+                <div class="card-title">Week10Lab</div>
+                <div class="card-subtitle rotated">Bootstrap</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week11lab/index.html" class="card">
+                <div class="card-title">Week11Lab</div>
+                <div class="card-subtitle rotated">Javascript</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/week12lab/index.html" class="card">
+                <div class="card-title">Week12Lab</div>
+                <div class="card-subtitle rotated">JQuery</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/WIP.html" class="card">
+                <div class="card-title">Week13Lab</div>
+                <div class="card-subtitle rotated">RESTful API</div>
+                <div class="card-status">tbd.</div>
+            </a>
+        </div>
+    </section>
+
+    <section id="section3">
+        <div class="wrapper">
+            <div class="large">assignment</div>
+            assignment
+        </div>
+        <div class="small-word-container">
+            <div class="small-word">WIP.</div>
+            <div class="small-word">nothing to show here.</div>
+        </div>
+        <div class="card-container">
+            <a href="#" class="card">
+                <div class="card-title">Assignment1</div>
+                <div class="card-subtitle rotated">XXXXX</div>
+                <div class="card-status">tbd.</div>
+            </a>
+            <a href="#" class="card">
+                <div class="card-title">Assignment2</div>
+                <div class="card-subtitle rotated">XXXXX</div>
+                <div class="card-status">tbd.</div>
+            </a>
+        </div>
+    </section>
+
+    <section id="section4">
+        <div class="wrapper">
+            <div class="large">project</div>
+            project
+        </div>
+        <div class="small-word-container">
+            <div class="small-word">my project is to develop a web-based back office system for Corsair.</div>
+            <div class="small-word">feel free to walkthrough my progress.</div>
+        </div>
+        <div class="card-container">
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/myPT1/" class="card">
+                <div class="card-title">Project1</div>
+                <div class="card-subtitle rotated">HTML</div>
+                <div class="card-status">fin.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/myPT2/" class="card">
+                <div class="card-title">Project2</div>
+                <div class="card-subtitle rotated">PHP x DB</div>
+                <div class="card-status">fin.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/myPT3/" class="card">
+                <div class="card-title">Project3</div>
+                <div class="card-subtitle rotated">JS x BT</div>
+                <div class="card-status">wip.</div>
+            </a>
+            <a href="http://lrgs.ftsm.ukm.my/users/a194333/myPT4/" class="card">
+                <div class="card-title">Enhancement</div>
+                <div class="card-subtitle rotated">Final</div>
+                <div class="card-status">tbd.</div>
+            </a>
+        </div>
+    </section>
+</main>
+
+<div class="sidebar">
+    <div class="sidebar-item" data-target="section1">[INF]+</div>
+    <div class="sidebar-item" data-target="section2">[LAB]+</div>
+    <div class="sidebar-item" data-target="section3">[ASN]+</div>
+    <div class="sidebar-item" data-target="section4">[PRJ]+</div>
+</div>
+
+<footer>
+    <div>
+        STATUS
+        <span class="blinking-circle"></span>
+        UNAVAILABLE
+    </div>
+    <div>[CURR: WORKING ON]</div>
+    <div>&copy; 2024</div>
+</footer>
+
+
+<script>
+    // Assign classes to card statuses based on their content
+    document.querySelectorAll('.card-status').forEach(status => {
+        const text = status.textContent.toLowerCase(); // Get the text and make it lowercase
+        if (text.includes('fin.')) {
+            status.classList.add('completed');
+        } else if (text.includes('wip.')) {
+            status.classList.add('in-progress');
+        } else if (text.includes('tbd.')) {
+            status.classList.add('not-started');
+        }
+    });
+
+
+    // Function to handle sidebar click and scroll to section
+    const sidebarItems = document.querySelectorAll('.sidebar-item');
+    const sections = document.querySelectorAll('section');
+
+    sidebarItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            const targetId = e.target.dataset.target; // Get the target section ID
+            const targetSection = document.getElementById(targetId); // Find the section by ID
+            window.scrollTo({
+                top: targetSection.offsetTop - 80, // Offset for fixed header
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Function to change sidebar item color when section is in view and move the large word
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+
+        sections.forEach((section, index) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sidebarItem = sidebarItems[index];
+            const largeWord = section.querySelector('.large');
+
+            // Change sidebar item color based on scroll position
+            if (scrollPosition >= sectionTop - 80 && scrollPosition < sectionTop + sectionHeight - 80) {
+                sidebarItem.classList.add('active');
+            } else {
+                sidebarItem.classList.remove('active');
+            }
+
+            // Move the large word based on the scroll position
+            if (largeWord) {
+                largeWord.style.transform = `translateY(-170px) translateX(-350px) translateX(${scrollPosition * 0.1}px)`; // Adjust the movement speed
+            }
+        });
+    });
+</script>
+</body>
+</html>
